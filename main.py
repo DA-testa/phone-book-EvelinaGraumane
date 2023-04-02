@@ -8,9 +8,31 @@ class Query:
             self.name = query[2]
 
 def read_queries():
-    n = int(input())
-    return [Query(input().split()) for i in range(n)]
-
+    while True:
+        try:
+            n = int(input("Enter the number of queries: "))
+            if n < 1:
+                raise ValueError("Number of queries should be positive.")
+            break
+        except ValueError as e:
+            print(f"Invalid input: {e}")
+    
+    queries = []
+    for i in range(n):
+        while True:
+            try:
+                query_str = input(f"Enter query #{i+1}: ")
+                query = Query(query_str.split())
+                if query.type not in ['add', 'del', 'find']:
+                    raise ValueError("Query type should be 'add', 'del', or 'find'.")
+                if query.type == 'add' and not query.name:
+                    raise ValueError("For 'add' queries, a name must be provided.")
+                break
+            except ValueError as e:
+                print(f"Invalid input: {e}")
+        queries.append(query)
+    return queries
+    
 def write_responses(result):
     print('\n'.join(result))
 
